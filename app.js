@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const period = document.querySelector('input[name="period"]:checked').value
     const difficulty = document.querySelector('input[name="difficulty"]:checked').value
     if (!username || !gamemode || !period) {return}
-    await fetch(`http://ws.audioscrobbler.com/2.0/?method=${gamemode}&user=${username}&period=${period}&limit=${difficulty}&api_key=${b}&format=json`
+    await fetch(`https://ws.audioscrobbler.com/2.0/?method=${gamemode}&user=${username}&period=${period}&limit=${difficulty}&api_key=${b}&format=json`
     ).then(res => res.json()
     ).then(x => { 
       switch (gamemode) {
