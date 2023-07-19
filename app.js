@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gamemode = document.querySelector('input[name="gamemode"]:checked').value
     const period = document.querySelector('input[name="period"]:checked').value
     const difficulty = document.querySelector('input[name="difficulty"]:checked').value
-    if (!username || !gamemode || !period) {return}
+    if (!username) { alert("Put your last.fm username in at the top!"); return }
     await fetch(`https://ws.audioscrobbler.com/2.0/?method=${gamemode}&user=${username}&period=${period}&limit=${difficulty}&api_key=${b}&format=json`
     ).then(res => res.json()
     ).then(x => { 
