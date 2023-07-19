@@ -2,11 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   //Listen for all start game buttons
-  const startButton = document.getElementById('start button')
-  startButton.addEventListener('click', startGame)
+  const startButton = document.getElementById('start-button')
+  startButton.onclick = startGame
 
-  const buttonOne = document.getElementById('option one')
-  const buttonTwo = document.getElementById('option two')
+  const buttonOne = document.getElementById('choice-one')
+  const buttonTwo = document.getElementById('choice-two')
+
+  const imageOne = document.getElementById('image-one')
+  const imageTwo = document.getElementById('image-two')
 
   const streakText = document.getElementById('streak')
 
@@ -50,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonTwo.value = choiceTwo['name']
     buttonTwo.revealedValue = choiceTwo['name'] + `: ${optionTwoPlaycount} plays`
 
-    console.log(optionOnePlaycount, optionTwoPlaycount)
     if (optionOnePlaycount > optionTwoPlaycount) {
       buttonOne.onclick = () => {endRound(correct = true)}
       buttonTwo.onclick = () => {endRound(correct = false)}
@@ -58,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonOne.onclick = () => {endRound(correct = false)}
       buttonTwo.onclick = () => {endRound(correct = true)}
     }
-
+    imageOne.src = await getImageForArtist(choiceOne["name"])
+    imageTwo.src = await getImageForArtist(choiceTwo["name"])
   }
 
   function getRandomChoices(elements) {
@@ -70,8 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return [elemOne, elemTwo]
   }
 
+  async function getImageForArtist(artistName, album=false, size=false) {
+    let url;
+    const params = {}
+    if (album) { params["album"] = album}
+    if (size) { params["size"] = size}
+    await albumArt( artistName, {} ).then((data) => {url = data})
+    return url;
+  }
+
   async function endRound(correct) {
-    console.log("ENDROUND")
     if (correct) { streak += 1 }
     else { streak = 0 }
     buttonOne.value = buttonOne.revealedValue
