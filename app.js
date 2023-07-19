@@ -15,11 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   API_KEY = ""
 
   let elementsList
-  let tempFunc1
-  let tempFunc2
   let streak = 0
 
   async function startGame(event) {
+    await fetch("enderflop.pythonanywhere.com/lastfm").then(res => res.json()).then(data => console.log(data))
     const username = document.getElementById('username').value
     const gamemode = document.querySelector('input[name="gamemode"]:checked').value
     const period = document.querySelector('input[name="period"]:checked').value
