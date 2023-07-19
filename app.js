@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const streakText = document.getElementById('streak')
 
-  API_KEY = "asdf"
+  a = "MDZiOGY3MjllNmFhYTZiOGM5YTViNTQ1MDQxMWFlMDg="
+  b = atob(a)
+  //pls don't break my infosec-degree-level encryption! my lastfm api key is all i have! (⋟﹏⋞)
 
   let elementsList
   let streak = 0
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const period = document.querySelector('input[name="period"]:checked').value
     const difficulty = document.querySelector('input[name="difficulty"]:checked').value
     if (!username || !gamemode || !period) {return}
-    await fetch(`http://ws.audioscrobbler.com/2.0/?method=${gamemode}&user=${username}&period=${period}&limit=${difficulty}&api_key=${API_KEY}&format=json`
+    await fetch(`http://ws.audioscrobbler.com/2.0/?method=${gamemode}&user=${username}&period=${period}&limit=${difficulty}&api_key=${b}&format=json`
     ).then(res => res.json()
     ).then(x => { 
       switch (gamemode) {
