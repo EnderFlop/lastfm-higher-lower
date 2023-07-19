@@ -39,12 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
         case "user.gettoptracks":
           guessingList = x['toptracks']['track']
           break
-  }})
+      }
+    })
     runRound(guessingList)
   }
 
   async function runRound(elements) {
     const [choiceOne, choiceTwo] = getRandomChoices(elements)
+    
+    await loadImages(choiceOne["name"], choiceTwo["name"])
+
     const optionOnePlaycount = parseInt(choiceOne["playcount"])
     buttonOne.value = choiceOne['name']
     buttonOne.revealedValue = choiceOne['name'] + `: ${optionOnePlaycount} plays`
@@ -60,8 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonOne.onclick = () => {endRound(correct = false)}
       buttonTwo.onclick = () => {endRound(correct = true)}
     }
-    imageOne.src = await getImageForArtist(choiceOne["name"])
-    imageTwo.src = await getImageForArtist(choiceTwo["name"])
+    
+    buttonOne.disabled = false
+    buttonTwo.disabled = false
   }
 
   function getRandomChoices(elements) {
@@ -73,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return [elemOne, elemTwo]
   }
 
-  async function getImageForArtist(artistName, album=false, size=false) {
+  async function getImageForArtist(artistName, album, size) {
     let url;
     const params = {}
     if (album) { params["album"] = album}
@@ -82,21 +87,32 @@ document.addEventListener('DOMContentLoaded', () => {
     return url;
   }
 
+  async function loadImages(nameOne, nameTwo, album=false, size=false) {
+    const urlOne = await getImageForArtist(nameOne, album, size)
+    const urlTwo = await getImageForArtist(nameTwo, album, size)
+    imageOne.src = urlOne
+    imageTwo.src = urlTwo
+  }
+
   async function endRound(correct) {
     if (correct) { streak += 1 }
     else { streak = 0 }
+
     buttonOne.value = buttonOne.revealedValue
     buttonOne.disabled = true
     buttonTwo.value = buttonTwo.revealedValue
     buttonTwo.disabled = true
     streakText.innerHTML = `Streak: ${streak}`
-    await new Promise(r => setTimeout(r, 2000))
-    buttonOne.disabled = false
-    buttonTwo.disabled = false
+
+    await new Promise(r => setTimeout(r, 1000))
     runRound(guessingList)
   }
 })
 
 //TODO:
-//Use Spotify API to get artist image
+// if artist, show artist
+// if album, get artist and album, show album
+// if song, get artist and album, show album
+// fetch images during downtime between rounds. first time fetching do it during setup.
+
 //make look cool
