@@ -12,13 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const streakText = document.getElementById('streak')
 
-  API_KEY = ""
+  API_KEY = "asdf"
 
   let elementsList
   let streak = 0
 
   async function startGame(event) {
-    await fetch("enderflop.pythonanywhere.com/lastfm").then(res => res.json()).then(data => console.log(data))
     const username = document.getElementById('username').value
     const gamemode = document.querySelector('input[name="gamemode"]:checked').value
     const period = document.querySelector('input[name="period"]:checked').value
