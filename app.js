@@ -5,10 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const startButton = document.getElementById('start button')
   startButton.addEventListener('click', startGame)
 
-  const optionOne = document.getElementById('option one')
-  optionOne.addEventListener('click', optionSelect)
-  const optionTwo = document.getElementById('option two')
-  optionTwo.addEventListener('click', optionSelect)
+  const buttonOne = document.getElementById('option one')
+  const buttonTwo = document.getElementById('option two')
 
   const streakText = document.getElementById('streak')
 
@@ -16,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   b = atob(a)
   //pls don't break my infosec-degree-level encryption! my lastfm api key is all i have! (⋟﹏⋞)
 
-  let elementsList
+  let guessingList
   let streak = 0
 
   async function startGame(event) {
@@ -30,56 +28,62 @@ document.addEventListener('DOMContentLoaded', () => {
     ).then(x => { 
       switch (gamemode) {
         case "user.gettopartists":
-          elementsList = x['topartists']['artist']
+          guessingList = x['topartists']['artist']
           break
         case "user.gettopalbums":
-          elementsList = x['topalbums']['album']
+          guessingList = x['topalbums']['album']
           break
         case "user.gettoptracks":
-          elementsList = x['toptracks']['track']
+          guessingList = x['toptracks']['track']
           break
   }})
-    runRound(elementsList)
+    runRound(guessingList)
   }
 
-  function runRound(elements) {
-    const [elemOne, elemTwo] = selectElements(elements)
-    optionOne.value = elemOne['name']
-    optionOne.revealedValue = elemOne['name'] + `: ${elemOne["playcount"]} plays`
-    optionTwo.value = elemTwo['name']
-    optionTwo.revealedValue = elemTwo['name'] + `: ${elemTwo["playcount"]} plays`
-    optionOne.options = [elemOne, elemTwo]
-    optionTwo.options = [elemTwo, elemOne]
+  async function runRound(elements) {
+    const [choiceOne, choiceTwo] = getRandomChoices(elements)
+    const optionOnePlaycount = parseInt(choiceOne["playcount"])
+    buttonOne.value = choiceOne['name']
+    buttonOne.revealedValue = choiceOne['name'] + `: ${optionOnePlaycount} plays`
+
+    const optionTwoPlaycount = parseInt(choiceTwo["playcount"])
+    buttonTwo.value = choiceTwo['name']
+    buttonTwo.revealedValue = choiceTwo['name'] + `: ${optionTwoPlaycount} plays`
+
+    console.log(optionOnePlaycount, optionTwoPlaycount)
+    if (optionOnePlaycount > optionTwoPlaycount) {
+      buttonOne.onclick = () => {endRound(correct = true)}
+      buttonTwo.onclick = () => {endRound(correct = false)}
+    } else {
+      buttonOne.onclick = () => {endRound(correct = false)}
+      buttonTwo.onclick = () => {endRound(correct = true)}
+    }
+
   }
 
-  function selectElements(elements) {
+  function getRandomChoices(elements) {
     const elemOne = elements[Math.floor(Math.random()*elements.length)]
     const elemTwo = elements[Math.floor(Math.random()*elements.length)]
     if (elemOne['name'] == elemTwo['name'] || parseInt(elemOne['playcount']) == parseInt(elemTwo['playcount'])) {
-      return selectElements(elements)
+      return getRandomChoices(elements)
     }
     return [elemOne, elemTwo]
   }
 
-  async function optionSelect(event) {
-    const [selected, other] = event.currentTarget.options
-    if (parseInt(selected['playcount']) > parseInt(other['playcount'])) {
-      streak += 1
-    }
-    else {
-      streak = 0
-    }
-    optionOne.value = optionOne.revealedValue
-    optionOne.disabled = true
-    optionTwo.value = optionTwo.revealedValue
-    optionTwo.disabled = true
+  async function endRound(correct) {
+    console.log("ENDROUND")
+    if (correct) { streak += 1 }
+    else { streak = 0 }
+    buttonOne.value = buttonOne.revealedValue
+    buttonOne.disabled = true
+    buttonTwo.value = buttonTwo.revealedValue
+    buttonTwo.disabled = true
     streakText.innerHTML = `Streak: ${streak}`
     await new Promise(r => setTimeout(r, 2000))
-    optionOne.disabled = false
-    optionTwo.disabled = false
-    runRound(elementsList)
+    buttonOne.disabled = false
+    buttonTwo.disabled = false
+    runRound(guessingList)
   }
-  
 })
 
 //TODO:
