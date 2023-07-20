@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const imageOne = document.getElementById('image-one')
   const imageTwo = document.getElementById('image-two')
 
+  const titleOne = document.getElementById('title-one')
+  const titleTwo = document.getElementById('title-two')
+
   const streakText = document.getElementById('streak')
 
   a = "MDZiOGY3MjllNmFhYTZiOGM5YTViNTQ1MDQxMWFlMDg="
@@ -50,12 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     await loadImages(choiceOne["name"], choiceTwo["name"])
 
     const optionOnePlaycount = parseInt(choiceOne["playcount"])
-    buttonOne.value = choiceOne['name']
-    buttonOne.revealedValue = choiceOne['name'] + `: ${optionOnePlaycount} plays`
+    titleOne.innerText = choiceOne['name']
+    titleOne.revealedValue = choiceOne['name'] + `: ${optionOnePlaycount} plays`
 
     const optionTwoPlaycount = parseInt(choiceTwo["playcount"])
-    buttonTwo.value = choiceTwo['name']
-    buttonTwo.revealedValue = choiceTwo['name'] + `: ${optionTwoPlaycount} plays`
+    titleTwo.innerText = choiceTwo['name']
+    titleTwo.revealedValue = choiceTwo['name'] + `: ${optionTwoPlaycount} plays`
 
     if (optionOnePlaycount > optionTwoPlaycount) {
       buttonOne.onclick = () => {endRound(correct = true)}
@@ -98,9 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (correct) { streak += 1 }
     else { streak = 0 }
 
-    buttonOne.value = buttonOne.revealedValue
+    titleOne.innerText = titleOne.revealedValue
     buttonOne.disabled = true
-    buttonTwo.value = buttonTwo.revealedValue
+    titleTwo.innerText = titleTwo.revealedValue
     buttonTwo.disabled = true
     streakText.innerHTML = `Streak: ${streak}`
 
@@ -116,3 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // fetch images during downtime between rounds. first time fetching do it during setup.
 
 //make look cool
+// images are shoved down from top when hovered

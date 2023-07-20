@@ -24,14 +24,33 @@ label {
   font-family: monospace, Lucida Console;
 }
 
-img {
+.game-button {
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin: auto;
-  display: block;
+}
+
+.game-button:disabled {
+  color: rgb(48, 48, 48);
+}
+
+.game-image {
+  visibility: visible;
   width: 30vw;
   height: 30vw;
 }
 
-.game-button {
-  display: block;
-  margin: auto;
+.game-image:hover {
+  width: 31vw;
+  height: 31vw;
 }
+
+.game-title {
+  position: absolute;
+  top: 42vw;
+  visibility: visible;
+  font-size: 18pt;
+}
+
