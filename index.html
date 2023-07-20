@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <input type="text" id="username" placeholder="last.fm username" value="alexbaboon">
+    <div class="options-container">
+      <input type="text" id="username" placeholder="last.fm username" value="alexbaboon">
 
-    <div id="optionsbox">
       <div>
         <input type="radio" id="gamemode artists" name="gamemode" value="user.gettopartists" checked>
         <label for="gamemode artists">Artists</label>
@@ -40,15 +40,24 @@
         <input type="radio" id="difficulty impossible" name="difficulty" value="1000">
         <label for="difficulty impossible">Impossible (top 1000)</label>
       </div>
+
+      <button type="button" id="start-button">Start!</button>
     </div>
 
-    <button type="button" id="start-button">Start!</button>
-
     <p id="streak">Streak: 0</p>
-    <input type="button" id="choice-one">
-    <input type="button" id="choice-two">
-    <img id="image-one">
-    <img id="image-two">
+
+    <div class="game-container">
+      <div class="game-half">
+        <img id="image-one">
+        <input type="button" class="game-button" id="choice-one">
+      </div> 
+
+      <div class="game-half">
+        <img id="image-two">
+        <input type="button" class="game-button" id="choice-two">
+      </div>
+    </div>
+
   </body>
   <!-- albumArt window global -->
   <script type="text/javascript" src="https://unpkg.com/album-art"></script>
